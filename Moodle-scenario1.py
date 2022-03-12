@@ -49,7 +49,10 @@ def log_in_admin():
             print(f'Login is successful. {locators.app} Dashboard is displayed - Page title: {driver.title}')
         else:
             print(f'Dashboard is not displayed. Check your code or website and try again.')
+      
 
+      
+      
 def log_out():
     print(f'------------------------------LOGOUT FUNCTION---------------------------------------------------')
     driver.find_element(By.CLASS_NAME, 'userpicture').click()
@@ -59,8 +62,54 @@ def log_out():
     sleep(0.25)
     if driver.current_url == locators.moodle_url:
         print(f'-----Logout is done! {datetime.datetime.now()}')
+      
+      
+      create_new_user():
+    # Navigate to 'Add a new user' form
+    driver.find_element(By.XPATH, '//span[contains(., "Site administration")]').click()
+    sleep(0.25)
+    assert driver.find_element(By.LINK_TEXT,'Users').is_displayed()
+    linkchek = driver.find_element(By.LINK_TEXT, 'Users').is_displayed()
+    print(f'------ User link is displayed: {linkchek}')
+    driver.find_element(By.LINK_TEXT, 'Users').click()
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT,'Add a new user').click()
+    sleep(.025)
+     # Validate we are on 'Add a new user  page
+    assert driver.find_element(By.LINK_TEXT,'Add a new user').is_displayed()
+    assert driver.title == locators.moodle_add_new_user_page_title
+    print(f'---------Navigate to Add a new user page -Page Title: {driver.title}')
+    sleep(0.25)
+    driver.find_element(By.ID,'id_username').send_keys(locators.new_username)
+    sleep(0.25)
+    driver.find_element(By.LINK_TEXT, 'Click to enter text').click()
+    sleep(0.25)
+    driver.find_element(By.ID, 'id_newpassword').send_keys(locators.new_password)
+    sleep(0.25)
+    driver.find_element(By. ID,'id_firstname').send_keys(locators.first_name)
+    sleep(0.25)
+    driver.find_element(By.ID,'id_lastname').send_keys(locators.last_name)
+    sleep(0.25)
+    driver.find_element(By.ID,'id_email').send_keys(locators.email)
+    sleep(0.25)
+    Select(driver.find_element(By.ID,'id_maildisplay')).select_by_visible_text('Allow everyone to see my email address')
+    sleep(0.25)
+    driver.find_element(By.ID,'id_moodlenetprofile').send_keys(locators.moodle_net_profile)
+    sleep(0.25)
+    driver.find_element(By.ID, 'id_city').send_keys(locators.city)
+    sleep(0.25)
+    Select(driver.find_element(By.ID,'id_country')).select_by_visible_text(locators.country)
+    sleep(0.25)
+    Select(driver.find_element(By.ID,'id_timezone')).select_by_value('America/Vancouver')
+    sleep(0.25)
+    driver.find_element(By.ID,'id_description_editoreditable').clear()
+    driver.find_element(By.ID,'id_description_editoreditable').send_keys(locators.description)
+    sleep(0.5)
+
+      
 
       
 setUp()
 log_in_admin()
 log_out()
+create_new_user()
